@@ -16,18 +16,16 @@ Tento projekt demonstruje kompletní automatizaci ETL procesu pro analýzu dat S
 ```
 expertim_keboola/
 ├── data/
-│   └── superstore_sample.csv       # Vstupní dataset (9994 řádků)
-├── README.md                        # Dokumentace
-└── WEBINAR_GUIDE.md                 # Průvodce webinářem
+│   └── superstore_sample.csv       # Vstupní dataset 
+│   └── ...
+├── documentation/
+    ├── README.md                        # Dokumentace
+    └── WEBINAR_GUIDE.md                 # Průvodce webinářem
 ```
 
 ## 📊 Dataset Superstore
 
 Dataset obsahuje transakční data z fiktivního obchodu:
-
-**Rozměry dat:**
-- **Řádků:** 9,994 objednávek
-- **Sloupců:** 21
 
 **Klíčové atributy:**
 - **Objednávky:** Order ID, Order Date, Ship Date, Ship Mode
@@ -40,8 +38,7 @@ Dataset obsahuje transakční data z fiktivního obchodu:
 
 ### 1. Extract - Načtení dat
 Data Superstore budou nahrána do Keboola Storage:
-- **Bucket:** `in.c-superstore`
-- **Tabulka:** `orders`
+- **Bucket:** `in.c-keboola-ex-google-drive-01kesn1c8hda86aqqm3z5hvvn1`
 - **Backend:** BigQuery
 
 ### 2. Transform - Zpracování dat
@@ -81,13 +78,6 @@ Agregované metriky podle:
 5. **Notify:** Notifikace o dokončení
 
 ## 📈 Očekávané výstupy
-
-### KPI Dashboard metriky:
-- **Celkové tržby:** $2.3M+
-- **Celkový profit:** $286K+
-- **Průměrná marže:** ~12%
-- **Top kategorie:** Technology, Furniture, Office Supplies
-- **Top region:** West
 
 ### Analytické insights:
 1. Vliv slev na ziskovost

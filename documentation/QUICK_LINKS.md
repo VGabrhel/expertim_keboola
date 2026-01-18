@@ -79,7 +79,6 @@ https://connection.us-east4.gcp.keboola.com/admin/projects/5087/storage/in.c-keb
 - Executive summary KPIs
 
 **Outputs:** 5 tabulek v `out.c-03---Build-Final-Datamarts`
-`
 
 ---
 
@@ -105,37 +104,6 @@ Start → Clean → Calculate KPIs → Build Datamarts → End
 ### Všechny flows
 🔄 **Flows Dashboard**  
 https://connection.us-east4.gcp.keboola.com/admin/projects/5087/flows-v2
-
----
-
-## 📱 Data App - Dashboard
-
-### Superstore Analytics Dashboard
-**Config ID:** `01keskc4afw6vqmr72nt323bg4`  
-**Data App ID:** `36555423`
-
-**🌐 Live Dashboard URL:**  
-https://superstore-analytics-dashboard-36555423.hub.us-east4.gcp.keboola.com
-
-**Konfigurace:**  
-https://connection.us-east4.gcp.keboola.com/admin/projects/5087/data-apps/01keskc4afw6vqmr72nt323bg4
-
-**Status:** ✅ DEPLOYED  
-**Auth:** HTTP Basic Auth (credentials v UI)
-
-### Všechny Data Apps
-📱 **Data Apps Dashboard**  
-https://connection.us-east4.gcp.keboola.com/admin/projects/5087/data-apps
-
----
-
-## 🐍 Python Komponenty
-
-### Superstore Data Loader (Custom Python)
-**ID:** `01kesk2k8znbw14bk70fzzyajx`  
-**URL:** https://connection.us-east4.gcp.keboola.com/admin/projects/5087/components/kds-team.app-custom-python/01kesk2k8znbw14bk70fzzyajx
-
-**Účel:** Demonstrační data loader (pro webinář nahrajte data ručně)
 
 ---
 
@@ -181,11 +149,6 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/
 2. Klikněte **Run**
 3. Sledujte progress
 
-### Zobrazit výsledky na Dashboardu
-1. Otevřete: https://superstore-analytics-dashboard-36555423.hub.us-east4.gcp.keboola.com
-2. Přihlaste se (credentials v config UI)
-3. Prohlédněte si interaktivní grafy
-
 ### Editovat SQL transformaci
 1. Transformations: https://connection.us-east4.gcp.keboola.com/admin/projects/5087/transformations-v2
 2. Vyberte transformaci
@@ -223,10 +186,6 @@ https://connection.us-east4.gcp.keboola.com/admin/projects/5087/settings
 - **Email:** support@keboola.com
 - **Chat:** Dostupný v Keboola UI (pravý dolní roh)
 - **Status Page:** https://status.keboola.com
-
-### Pro technické dotazy
-- **Stack Overflow:** Tag `keboola`
-- **GitHub Issues:** https://github.com/keboola (pro open-source komponenty)
 
 ---
 
@@ -301,8 +260,7 @@ https://connection.us-east4.gcp.keboola.com/admin/projects/5087/settings/usage
 3. 🔍 Workspace: https://connection.us-east4.gcp.keboola.com/admin/projects/5087/workspaces
 4. 📝 Transformations: https://connection.us-east4.gcp.keboola.com/admin/projects/5087/transformations-v2
 5. 🔄 Flow: https://connection.us-east4.gcp.keboola.com/admin/projects/5087/flows-v2/01keskb0s09wfgcwft43pez121
-6. 📱 Data App: https://superstore-analytics-dashboard-36555423.hub.us-east4.gcp.keboola.com
-7. 📋 Tento soubor (pro reference)
+6. 📋 Tento soubor (pro reference)
 
 ---
 

@@ -1,9 +1,5 @@
 # 📁 Přehled projektu - Superstore ETL v Keboola
 
-## 🎉 Status: KOMPLETNÍ ✅
-
-Vše je připraveno pro webinář o automatizaci datových procesů v Keboola!
-
 ---
 
 ## 📂 Struktura projektu
@@ -12,15 +8,16 @@ Vše je připraveno pro webinář o automatizaci datových procesů v Keboola!
 expertim_keboola/
 │
 ├── 📊 data/
-│   └── superstore_sample.csv          
-│
-├── 📖 README.md                        Hlavní dokumentace projektu
-├── 🎯 WEBINAR_GUIDE.md                 Krok-za-krokem průvodce
-├── 📤 DATA_UPLOAD_INSTRUCTIONS.md      Jak nahrát data do Keboola
-├── 📋 SUMMARY.md                       Shrnutí implementace
-├── 🎤 PRESENTATION_GUIDE.md            Průvodce pro prezentaci
-├── 🔗 QUICK_LINKS.md                   Všechny URL odkazy
-└── 📄 INDEX.md                         Tento soubor
+│   └── superstore_sample.csv         
+│   └── ...    
+├── 📊 documentation/
+     ├── 📖 README.md                        Hlavní dokumentace projektu
+     ├── 🎯 WEBINAR_GUIDE.md                 Krok-za-krokem průvodce
+     ├── 📤 DATA_UPLOAD_INSTRUCTIONS.md      Jak nahrát data do Keboola
+     ├── 📋 SUMMARY.md                       Shrnutí implementace
+     ├── 🎤 PRESENTATION_GUIDE.md            Průvodce pro prezentaci
+     ├── 🔗 QUICK_LINKS.md                   Všechny URL odkazy
+     └── 📄 INDEX.md                         Tento soubor
 ```
 
 ---
@@ -254,15 +251,6 @@ expertim_keboola/
 - [ ] Přečíst `README.md`
 - [ ] Přihlásit se do Keboola (nebo vytvořit trial account)
 - [ ] Připravit otázky
-
-### Den D (před začátkem):
-- [ ] Otevřít všechny záložky
-- [ ] Otevřit `PRESENTATION_GUIDE.md` jako referenci
-- [ ] Spustit Flow jednou (warm-up)
-- [ ] Mít po ruce `QUICK_LINKS.md`
-- [ ] Zavřít všechny ostatní aplikace (performance)
-- [ ] Vypnout notifikace
-- [ ] Připravit vodu/kávu ☕
 
 ---
 

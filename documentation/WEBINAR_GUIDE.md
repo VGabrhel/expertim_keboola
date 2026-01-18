@@ -7,7 +7,7 @@
 2. **Dataset** - `superstore_sample.csv` připraven
 3. **SQL Dialekt** - BigQuery Standard SQL
 
-## ČÁST 1: Úvod do Keboola (10 min)
+## ČÁST 1: Úvod do Keboola
 
 ### Co je Keboola?
 - Cloud-based datová platforma
@@ -25,7 +25,7 @@
    Superstore       KPI Calculations        Dashboards
 ```
 
-## ČÁST 2: Nahrání dat do Storage (5 min)
+## ČÁST 2: Nahrání dat do Storage
 
 ### Krok 1: Vytvoření bucketu
 1. Přejděte do **Storage** → **Buckets**

@@ -4,7 +4,7 @@
 
 ---
 
-## ČÁST 1: Úvod (10 minut) ⏰ 0:00 - 0:10
+## ČÁST 1: Úvod
 
 ### Představení problému
 **"Máte tuto situaci?"**
@@ -30,7 +30,7 @@
 
 ---
 
-## ČÁST 2: Live Demo - Storage & Explorace (10 minut) ⏰ 0:10 - 0:20
+## ČÁST 2: Live Demo - Storage & Explorace
 
 ### 🎯 Ukázat Keboola UI
 
@@ -39,17 +39,15 @@
 Keboola Dashboard → Storage → Buckets
 ```
 
-### Ukázat bucket struktur:
+### Ukázat strukturu buckets:
 ```
-in.c-superstore          (vstupní data)
-   └─ orders             (9,994 řádků)
+01---Clean-and-Standardize-Superstore-Data         (transformovaná data)
+   └─ cleaned_orders             (9,994 řádků)
 
-out.c-superstore-transformed  (transformovaná data)
-   └─ cleaned_orders
+02---Calculate-KPIs  (výpočet KPIs)
    └─ orders_with_kpis
 
-01---Clean-and-Standardize-Superstore-Data
-     (finální datamarty)
+03---Build-Final-Datamarts (finální datamarty)
    └─ datamart_region_category
    └─ datamart_time_series
    └─ datamart_customer_segment
@@ -61,7 +59,6 @@ out.c-superstore-transformed  (transformovaná data)
 **Kliknout na tabulku `orders`**
 - Ukázat sloupce
 - Ukázat Data Sample
-- Ukázat Data Profiling (pokud dostupné)
 
 ### 💻 Workspace - SQL Explorace
 
@@ -78,10 +75,8 @@ SELECT
   COUNT(*) as total_rows,
   COUNT(DISTINCT `Order ID`) as unique_orders,
   COUNT(DISTINCT `Customer ID`) as unique_customers
-FROM `in.c-superstore.orders`;
+FROM `kbc-use4-5087-8ecb.out_c_01___Clean_and_Standardize_Superstore_Data.cleaned_orders`;
 ```
-
-**Komentář:** "Vidíme že máme 9,994 řádků, ale jen 5,009 unikátních objednávek - to znamená, že každá objednávka může mít více položek."
 
 ```sql
 -- Tržby podle kategorií
@@ -90,16 +85,16 @@ SELECT
   ROUND(SUM(CAST(Sales AS FLOAT64)), 2) as total_sales,
   ROUND(SUM(CAST(Profit AS FLOAT64)), 2) as total_profit,
   COUNT(*) as order_count
-FROM `in.c-superstore.orders`
+FROM `kbc-use4-5087-8ecb.out_c_01___Clean_and_Standardize_Superstore_Data.cleaned_orders`
 GROUP BY Category
 ORDER BY total_sales DESC;
 ```
 
-**Komentář:** "Technology má nejvyšší tržby, ale Furniture má zajímavě nízký profit. To je něco, na co se chceme zaměřit v analýze."
+**Komentář:** "Technology má nejvyšší tržby a Furniture má nízký profit. To je něco, na co se chceme zaměřit v analýze."
 
 ---
 
-## ČÁST 3: SQL Transformace #1 - Čištění (15 minut) ⏰ 0:20 - 0:35
+## ČÁST 3: SQL Transformace #1 - Čištění
 
 ### 🎯 Otevřít transformaci
 
@@ -142,8 +137,8 @@ UPPER(TRIM(Category)) as category_clean,
 **Komentář:** "Odstraňujeme mezery a uniformizujeme na velká písmena - předejdeme problémům s 'Technology' vs ' Technology' vs 'TECHNOLOGY'."
 
 ### Ukázat Input/Output Mapping
-- **Input:** `in.c-superstore.orders`
-- **Output:** `out.c-superstore-transformed.cleaned_orders`
+- **Input:** `superstore_all`
+- **Output:** `kbc-use4-5087-8ecb.out_c_01___Clean_and_Standardize_Superstore_Data.cleaned_orders`
 
 ### ▶️ Spustit transformaci
 **Kliknout Run** a sledovat progress.
@@ -152,7 +147,7 @@ UPPER(TRIM(Category)) as category_clean,
 
 ---
 
-## ČÁST 4: SQL Transformace #2 - KPI Výpočty (15 minut) ⏰ 0:35 - 0:50
+## ČÁST 4: SQL Transformace #2 - KPI Výpočty
 
 ### 🎯 Otevřít transformaci
 
@@ -211,7 +206,7 @@ END as profit_category
 
 ---
 
-## ČÁST 5: SQL Transformace #3 - Datmarty (15 minut) ⏰ 0:50 - 1:05
+## ČÁST 5: SQL Transformace #3 - Datamarts
 
 ### 🎯 Otevřít transformaci
 
@@ -304,7 +299,7 @@ FROM ...;
 
 ---
 
-## ČÁST 6: Orchestrace - Flow (10 minut) ⏰ 1:05 - 1:15
+## ČÁST 6: Orchestrace - Flow (10 minut)
 
 ### 🎯 Otevřít Flow
 
@@ -354,67 +349,7 @@ END
 
 ---
 
-## ČÁST 7: Streamlit Data App (10 minut) ⏰ 1:15 - 1:25
-
-### 🎯 Otevřít Data App
-
-```
-Data Apps → Superstore Analytics Dashboard → OPEN DATA APP
-```
-
-### Projít Dashboard sekce:
-
-**1. Executive Summary KPIs:**
-```
-💰 Celkové tržby: $2.3M
-📈 Celkový profit: $286K
-🛒 Počet objednávek: 5,009
-👥 Zákazníci: 793
-```
-
-**Komentář:** "První pohled - hlavní metriky pro management. Okamžitě vidíte celkový stav businessu."
-
-**2. Časový vývoj:**
-- Graf tržeb a profitu po měsících
-- Dual-axis pro lepší srovnání
-
-**Komentář:** "Vidíme sezónnost - Q4 (konec roku) má výrazně vyšší tržby. To je důležité pro plánování zásob."
-
-**3. Regionální výkonnost:**
-- Bar chart profitu podle regionů
-- Barevné kódování podle marže
-
-**Komentář:** "West region je jasný lídr. South má nejnižší profit - možná potřebuje jiný marketing approach."
-
-**4. Zákaznické segmenty:**
-- Koláčový graf profitu podle segmentů
-- Consumer vs Corporate vs Home Office
-
-**Komentář:** "Consumer segment generuje většinu profitu. Corporate má vysoké tržby, ale nižší marže - možná kvůli slevám."
-
-**5. Top 20 produktů:**
-- Horizontální bar chart
-- Barevné kódování podle marže
-
-**Komentář:** "Canon imageClass kopírka je top seller. Furniture produkty mají často nízkou nebo zápornou marži."
-
-**6. Vliv slev:**
-- Koláčový graf: Profit vs Loss with Discount
-
-**Komentář:** "38% objednávek se slevou končí ve ztrátě! To je red flag pro pricing strategii."
-
-### Interaktivita:
-
-**Ukázat:**
-- Hover efekty na grafech
-- Zoom na časovém grafu
-- Automatická aktualizace dat
-
-**Komentář:** "Dashboard je živý - kdykoliv spustíte ETL pipeline, data se aktualizují. Žádný manuální export z Excelu."
-
----
-
-## ČÁST 8: Export a Sdílení (5 minut) ⏰ 1:25 - 1:30
+## ČÁST 7: Export a Sdílení
 
 ### Google Sheets Writer
 
@@ -431,26 +366,17 @@ Writers → Google Sheets
 
 **Komentář:** "Pro kolegy, kteří chtějí data v Excelu. Automaticky se updatuje každý den."
 
-### Looker Studio / Power BI
+### Looker Studio
 
 **Ukázat connection:**
 - Direct connection k BigQuery
-- Tabulky z `01---Clean-and-Standardize-Superstore-Data
-`
+- Tabulky z `01---Clean-and-Standardize-Superstore-Data`
 
 **Komentář:** "Pro pokročilé dashboardy můžete použít Power BI nebo Looker Studio. Připojí se přímo k datamartům v BigQuery."
 
-### Data App Sharing
-
-**Autentizace:**
-- HTTP Basic Auth (username/password)
-- Bezpečné sdílení přes URL
-
-**Komentář:** "Dashboard můžete sdílet s kýmkoliv. Je chráněný heslem, takže data jsou v bezpečí."
-
 ---
 
-## ČÁST 9: Best Practices & Tipy (10 minut) ⏰ 1:30 - 1:40
+## ČÁST 8: Best Practices & Tipy
 
 ### ✅ Co jsme se naučili:
 
@@ -507,7 +433,7 @@ SELECT COUNT(*) FROM orders WHERE sales < profit;
 
 ---
 
-## ČÁST 10: Q&A a Diskuse (10 minut) ⏰ 1:40 - 1:50
+## ČÁST 10: Q&A a Diskuse
 
 ### Časté otázky:
 
@@ -526,12 +452,9 @@ A: Libovolně - každou hodinu, každý den, real-time streaming. Záleží na u
 **Q: Můžu přidat vlastní Python kód?**
 A: Ano! Python Transformations nebo Custom Python component pro složitější logiku.
 
-**Q: Je to bezpečné?**
-A: Ano - enterprise-grade security, encryption at rest i in transit, SOC 2 compliance.
-
 ---
 
-## 🎯 Závěrečné shrnutí (2 minuty) ⏰ 1:50 - 1:52
+## 🎯 Závěrečné shrnutí
 
 ### Co jsme vytvořili:
 
@@ -586,34 +509,7 @@ Máte otázky? Jsem tu pro vás!"
 - Email: support@keboola.com
 - Docs: help.keboola.com
 - Community: community.keboola.com
-
 ---
 
-## 📋 Checklist pro přípravu prezentace
 
-### Den před webinářem:
-- [ ] Nahrát plná Superstore data do Storage
-- [ ] Spustit ETL Pipeline jednou (ověřit, že funguje)
-- [ ] Otevřít Dashboard (ověřit, že zobrazuje data)
-- [ ] Připravit 2. monitor pro sdílení obrazovky
-- [ ] Otevřít všechny potřebné záložky v browseru
-- [ ] Ověřit internet connection
-
-### Otevřené záložky v browseru:
-1. Keboola Dashboard
-2. Storage - Buckets
-3. Workspace
-4. Transformations list
-5. Flow detail
-6. Data App Dashboard
-7. Prezentační poznámky (tento soubor)
-
-### Backup plán:
-- Připravit screenshoty pro případ tech issues
-- Nahrát video demo jako backup
-- Mít připravené slides s klíčovými momenty
-
----
-
-**Break a leg! 🎭🚀**
 
