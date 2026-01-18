@@ -1,6 +1,6 @@
 # 🎤 Prezentační průvodce pro webinář
 
-## Časový plán (90 minut celkem)
+## Časový plán (60 minut celkem)
 
 ---
 
