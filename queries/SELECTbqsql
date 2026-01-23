@@ -1,0 +1,205 @@
+SELECT
+	Customer_ID,
+    Customer_Name,
+    Segment,
+    Country,
+    City,
+    State,
+    Postal_Code,
+    Region
+FROM `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_customer-superstore_sample_customer` 
+LIMIT 10;
+
+SELECT
+	Order_ID,
+    Customer_ID,
+    Order_Date,
+    Ship_Date,
+    Ship_Mode
+FROM `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_order-superstore_sample_order` 
+LIMIT 10;
+
+SELECT
+	Product_ID,
+    Order_ID,
+    Category,
+    SubCategory,
+    Product_Name,
+    Sales,
+    Quantity,
+    Discount,
+    Profit
+FROM `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_product-superstore_sample_product` 
+LIMIT 10;
+
+CREATE OR REPLACE TABLE `kbc-use4-5087-8ecb.WORKSPACE_36874428.superstore_all` AS
+SELECT
+    customers.Customer_ID,
+    customers.Customer_Name,
+    customers.Segment,
+    customers.Country,
+    customers.City,
+    customers.State,
+    customers.Postal_Code,
+    customers.Region,
+    orders.Order_ID,
+    orders.Order_Date,
+    orders.Ship_Date,
+    orders.Ship_Mode,
+    products.Product_ID,
+    products.Category,
+    products.SubCategory,
+    products.Product_Name,
+    products.Sales,
+    products.Quantity,
+    products.Discount,
+    products.Profit
+FROM `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_customer-superstore_sample_customer` AS customers
+LEFT JOIN `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_order-superstore_sample_order` AS orders 
+    ON customers.Customer_ID = orders.Customer_ID
+LEFT JOIN `kbc-use4-5087-8ecb.in_c_keboola_ex_google_drive_01kesn1c8hda86aqqm3z5hvvn1.superstore_sample_product-superstore_sample_product` AS products 
+    ON orders.Order_ID = products.Order_ID
+;
+
+CREATE OR REPLACE TABLE `kbc-use4-5087-8ecb.WORKSPACE_36874428.superstore_all` AS
+SELECT
+  `Order_ID` AS order_id,
+  `Order_Date` AS order_date_raw,
+  `Ship_Date` AS ship_date_raw,
+  `Ship_Mode` AS ship_mode,
+  `Customer_ID` AS customer_id,
+  `Customer_Name` AS customer_name,
+  `Segment` AS segment,
+  `Country` AS country,
+  `City` AS city,
+  `State` AS state,
+  `Postal_Code` AS postal_code,
+  `Region` AS region,
+  `Product_ID` AS product_id,
+  `Category` AS category,
+  `SubCategory` AS sub_category,
+  `Product_Name` AS product_name,
+  `Sales` AS sales,
+  `Quantity` AS quantity,
+  `Discount` AS discount,
+  `Profit` AS profit,
+  PARSE_DATE('%m/%d/%Y', `Order_Date`) AS order_date_parsed,
+  EXTRACT(YEAR FROM PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_year,
+  EXTRACT(QUARTER FROM PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_quarter,
+  EXTRACT(MONTH FROM PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_month,
+  FORMAT_DATE('%B', PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_month_name,
+  FORMAT_DATE('%A', PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_day_name,
+  EXTRACT(WEEK FROM PARSE_DATE('%m/%d/%Y', `Order_Date`)) AS order_week,
+  PARSE_DATE('%m/%d/%Y', `Ship_Date`) AS ship_date_parsed,
+  DATE_DIFF(PARSE_DATE('%m/%d/%Y', `Ship_Date`), PARSE_DATE('%m/%d/%Y', `Order_Date`), DAY) AS ship_days,
+  UPPER(TRIM(Category)) AS category_clean,
+  UPPER(TRIM(`SubCategory`)) AS subcategory_clean,
+  UPPER(TRIM(Segment)) AS segment_clean,
+  UPPER(TRIM(Region)) AS region_clean
+FROM `kbc-use4-5087-8ecb.WORKSPACE_36874428.superstore_all`
+;
+
+CREATE OR REPLACE TABLE `kbc-use4-5087-8ecb.WORKSPACE_36874428.orders_with_kpis` AS
+SELECT
+  cleaned_orders.order_id,
+  cleaned_orders.order_date_parsed,
+  cleaned_orders.order_year,
+  cleaned_orders.order_quarter,
+  cleaned_orders.order_month,
+  cleaned_orders.order_month_name,
+  cleaned_orders.order_day_name,
+  cleaned_orders.order_week,
+  cleaned_orders.ship_date_parsed,
+  cleaned_orders.ship_days,
+  cleaned_orders.category_clean,
+  cleaned_orders.subcategory_clean,
+  cleaned_orders.segment_clean,
+  cleaned_orders.region_clean,
+  cleaned_orders.sales,
+  cleaned_orders.quantity,
+  cleaned_orders.discount,
+  cleaned_orders.profit,
+  cleaned_orders.customer_id,
+  cleaned_orders.customer_name,
+  cleaned_orders.segment,
+  cleaned_orders.country,
+  cleaned_orders.city,
+  cleaned_orders.state,
+  cleaned_orders.postal_code,
+  cleaned_orders.region,
+  cleaned_orders.product_id,
+  cleaned_orders.category,
+  cleaned_orders.product_name,
+  CASE WHEN CAST(sales AS FLOAT64) > 0 THEN ROUND((
+    CAST(profit AS FLOAT64) / CAST(sales AS FLOAT64)
+  ) * 100, 2) ELSE 0 END AS profit_margin_pct,
+  ROUND(CAST(sales AS FLOAT64) - CAST(profit AS FLOAT64), 2) AS cost,
+  CASE
+    WHEN (
+      CAST(sales AS FLOAT64) - CAST(profit AS FLOAT64)
+    ) > 0
+    THEN ROUND((
+      CAST(profit AS FLOAT64) / (
+        CAST(sales AS FLOAT64) - CAST(profit AS FLOAT64)
+      )
+    ) * 100, 2)
+    ELSE 0
+  END AS roi_pct,
+  --CASE WHEN quantity::FLOAT64 > 0 THEN ROUND(profit::FLOAT64 / quantity::FLOAT64, 2) ELSE 0 END AS profit_per_unit,
+  CASE
+    WHEN CAST(discount AS FLOAT64) > 0 AND CAST(profit AS FLOAT64) < 0
+    THEN 'Loss with Discount'
+    WHEN CAST(discount AS FLOAT64) > 0 AND CAST(profit AS FLOAT64)  > 0
+    THEN 'Profit with Discount'
+    WHEN CAST(discount AS FLOAT64) = 0 AND CAST(profit AS FLOAT64)  < 0
+    THEN 'Loss without Discount'
+    ELSE 'Profit without Discount'
+  END AS discount_impact,
+  CASE WHEN CAST(quantity AS FLOAT64) > 0 THEN ROUND(CAST(sales AS FLOAT64) / CAST(quantity AS FLOAT64), 2) ELSE 0 END AS revenue_per_unit,
+  CASE
+    WHEN CAST(profit AS FLOAT64) < 0
+    THEN 'Loss'
+    WHEN CAST(profit AS FLOAT64) = 0
+    THEN 'Break-even'
+    WHEN CAST(profit AS FLOAT64) BETWEEN 0 AND 50
+    THEN 'Low Profit'
+    WHEN CAST(profit AS FLOAT64) BETWEEN 50 AND 200
+    THEN 'Medium Profit'
+    ELSE 'High Profit'
+  END AS profit_category,
+  CASE
+    WHEN CAST(discount AS FLOAT64) = 0
+    THEN 'No Discount'
+    WHEN CAST(discount AS FLOAT64) BETWEEN 0 AND 0.1
+    THEN 'Low Discount (0-10%)'
+    WHEN CAST(discount AS FLOAT64) BETWEEN 0.1 AND 0.25
+    THEN 'Medium Discount (10-25%)'
+    ELSE 'High Discount (25%+)'
+  END AS discount_tier
+FROM `kbc-use4-5087-8ecb.out_c_01___Clean_and_Standardize_Superstore_Data.cleaned_orders` AS cleaned_orders;
+
+SELECT
+  'Overall Business Performance' AS metric_scope,
+  COUNT(DISTINCT order_id) AS total_orders,
+  COUNT(DISTINCT customer_id) AS total_customers,
+  COUNT(*) AS total_line_items,
+  ROUND(SUM(CAST(quantity AS FLOAT64)), 0) AS total_units_sold,
+  ROUND(SUM(CAST(sales AS FLOAT64)), 2) AS total_sales,
+  ROUND(SUM(CAST(profit AS FLOAT64)), 2) AS total_profit,
+  ROUND(SUM(CAST(cost AS FLOAT64)), 2) AS total_cost,
+  ROUND((
+    SUM(CAST(profit AS FLOAT64)) / NULLIF(SUM(CAST(sales AS FLOAT64)), 0)
+  ) * 100, 2) AS overall_margin_pct,
+  ROUND(AVG(CAST(roi_pct AS FLOAT64)), 2) AS avg_roi_pct,
+  ROUND(AVG(CAST(sales AS FLOAT64)), 2) AS avg_sales_per_line,
+  ROUND(AVG(CAST(profit AS FLOAT64)), 2) AS avg_profit_per_line,
+  ROUND(AVG(CAST(discount AS FLOAT64)), 3) AS avg_discount,
+  ROUND(SUM(CAST(sales AS FLOAT64)) / NULLIF(COUNT(DISTINCT order_id), 0), 2) AS avg_order_value,
+  ROUND(SUM(CAST(profit AS FLOAT64)) / NULLIF(COUNT(DISTINCT order_id), 0), 2) AS avg_profit_per_order,
+  COUNTIF(discount_impact = 'Loss with Discount') AS loss_with_discount_count,
+  COUNTIF(discount_impact = 'Profit with Discount') AS profit_with_discount_count,
+  ROUND(COUNTIF(CAST(discount AS FLOAT64) > 0) / NULLIF(COUNT(*), 0) * 100, 2) AS pct_orders_with_discount,
+  COUNTIF(CAST(profit AS FLOAT64) < 0) AS loss_making_lines,
+  COUNTIF(CAST(profit AS FLOAT64) > 0) AS profit_making_lines,
+  ROUND(COUNTIF(CAST(profit AS FLOAT64) > 0) / NULLIF(COUNT(*), 0) * 100, 2) AS pct_profitable_lines
+FROM `kbc-use4-5087-8ecb.out_c_02___Calculate_KPIs.orders_with_kpis`;

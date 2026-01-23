@@ -40,11 +40,9 @@ expertim_keboola/
 ### 2. WEBINAR_GUIDE.md
 **Účel:** Detailní návod pro webinář  
 **Obsahuje:**
-- 10 částí s časovým plánem (90 minut)
-- Krok-za-krokem instrukce
+- Instrukce: krok-za-krokem
 - SQL kód pro všechny transformace
 - Ukázkové SQL dotazy pro exploraaci
-- Očekávané metriky
 
 **Čtěte před webinářem:** Pro přípravu obsahu
 
@@ -67,7 +65,6 @@ expertim_keboola/
 **Obsahuje:**
 - Seznam všech 3 SQL transformací (s ID)
 - Conditional Flow konfigurace
-- Streamlit Data App (s URL)
 - Očekávané metriky po spuštění
 - Checklist pro webinář
 - Troubleshooting tipy
@@ -79,7 +76,6 @@ expertim_keboola/
 ### 5. PRESENTATION_GUIDE.md
 **Účel:** Scénář pro prezentaci webináře  
 **Obsahuje:**
-- Časový plán po minutách (60 min)
 - Co ukázat v každé části
 - Komentáře k jednotlivým slides
 - Demo flow
@@ -143,7 +139,6 @@ expertim_keboola/
 1. **Přečíst:** `README.md` (5 min)
 2. **Nahrát data:** Podle `DATA_UPLOAD_INSTRUCTIONS.md` (10 min)
 3. **Spustit Flow:** Kliknout Run na Flow (5 min)
-4. **Zobrazit výsledky:** Otevřít Dashboard (2 min)
 
 **Celkem:** ~22 minut od začátku k výsledkům!
 
@@ -302,7 +297,7 @@ expertim_keboola/
 
 ---
 
-## 🎁 Bonus materiály
+## 🎁 Bonusové materiály
 
 V projektu najdete:
 - ✅ Kompletní SQL kód všech transformací

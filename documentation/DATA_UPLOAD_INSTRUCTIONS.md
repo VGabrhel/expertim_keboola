@@ -57,12 +57,6 @@ Pokud máte data v Google Sheets, můžete je nahrát do Keboola pomocí [Google
 
 **Poznámka:** Google Sheets mají [striktní limity](https://support.google.com/drive/answer/37603) na velikost dokumentu. Pro větší datasety použijte raději přímé nahrání CSV přes UI nebo Google Drive data destination connector.
 
-### Krok 3: Použití Python skriptu (Alternative)
-
-Připravil jsem Custom Python komponentu `Superstore Data Loader`, která obsahuje ukázkový kód. 
-
-**Poznámka:** Tato komponenta v současnosti zapisuje pouze sample data pro demonstraci. Pro webinář doporučuji nahrát plný dataset ručně přes UI, jak je popsáno výše.
-
 ## Kontrola po nahrání
 
 Spusťte tento SQL dotaz v Keboola Workspace pro kontrolu:
