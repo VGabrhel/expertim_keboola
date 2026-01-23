@@ -299,7 +299,7 @@ FROM ...;
 
 ---
 
-## ČÁST 6: Orchestrace - Flow (10 minut)
+## ČÁST 6: Orchestrace - Flow
 
 ### 🎯 Otevřít Flow
 
